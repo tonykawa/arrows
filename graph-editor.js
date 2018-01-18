@@ -355,6 +355,7 @@ window.onload = function()
 
     function formatMarkup()
     {
+    	//To-Do: Add colors and shape settings, also add rectangle shape to bootstrap styles
         var container = d3.select( "body" ).append( "div" );
         gd.markup.format( graphModel, container );
         var markup = container.node().innerHTML;
@@ -465,30 +466,52 @@ window.onload = function()
         cancelModal();
     });
 
-    //updating diagram title
-    var editDiagramTitle = function()
-    {
-        appendModalBackdrop();
-        d3.select( ".modal.edit-diagram-title" ).classed( "hide", false );
-    };
-
-    d3.select("#save_diagram_title" ).on("click", function() {
-        d3.select("#editDiagramTitle").node().innerHTML = d3.select("#diagram_title").node().value;
-        cancelModal();
-    });
-
     function changeInternalScale() {
         graphModel.internalScale(d3.select("#internalScale").node().value);
         draw();
     }
+
+    function importDiagram() {
+    	//To-Do: read selected style from file
+    	if (window.File && window.FileReader && window.FileList && window.Blob) {
+	    	var fileSelected = document.createElement("input");
+	        fileSelected.setAttribute("type", "file");
+    	
+		    fileSelected.addEventListener("change", function(e) {
+		        //Get the file object 
+		        var fileTobeRead = fileSelected.files[0];
+
+	            var fileReader = new FileReader(); 
+	            fileReader.onload = function (e) { 
+	                graphModel = parseMarkup(fileReader.result);
+	                draw(); 
+	            } 
+	            fileReader.readAsText(fileTobeRead);
+		    }, false);
+	        fileSelected.click();
+		} 
+	 	else { 
+	    	alert("Files are not supported"); 
+	 	}
+    }
+
+    function saveSession() {
+    	//To-Do: save selected style to file
+		var text = formatMarkup();
+		var filename = $("#input-fileName").val()
+		var blob = new Blob([text], {type: "text/plain;charset=utf-8"});
+		saveAs(blob, filename+".graph");
+	}
+
     d3.select("#internalScale").node().value = graphModel.internalScale();
 
     d3.select(window).on("resize", draw);
     d3.select("#internalScale" ).on("change", changeInternalScale);
+    d3.select( "#saveSessionButton" ).on( "click", saveSession );
     d3.select( "#exportMarkupButton" ).on( "click", exportMarkup );
+    d3.select( "#importDiagram" ).on( "click", importDiagram );
 	d3.select( "#exportCypherButton" ).on( "click", exportCypher );
     d3.select( "#chooseStyleButton" ).on( "click", chooseStyle );
-    d3.select( "#editDiagramTitle" ).on( "click", editDiagramTitle);
     d3.selectAll( ".modal-dialog" ).on( "click", function ()
     {
         d3.event.stopPropagation();

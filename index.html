@@ -2,6 +2,7 @@
 <html>
 <head>
   <script type="text/javascript" src="lib/d3.v3.js" charset="UTF-8"></script>
+  <script type="text/javascript" src="lib/filesaver.js"></script>
   <script type="text/javascript" src="graph-diagram.js"></script>
 
   <link rel="stylesheet" href="lib/bootstrap.css" type="text/css">
@@ -37,9 +38,11 @@
       <div class="nav-collapse collapse">
         <ul class="nav pull-right">
           <li><a id="add_node_button"><i class="icon-plus"></i> Node</a></li>
+          <li><a id="importDiagram">Load Session</a></li>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
             <ul class="dropdown-menu">
+              <li><a id="saveSessionButton">Save Session</a></li>
               <li><a id="exportMarkupButton">Markup</a></li>
               <li><a id="downloadSvgButton" download="arrows.svg">SVG</a></li>
               <li><a id="exportCypherButton">Cypher</a></li>
