@@ -5,45 +5,55 @@
   <script type="text/javascript" src="graph-diagram.js"></script>
 
   <link rel="stylesheet" href="lib/bootstrap.css" type="text/css">
+  <link rel="stylesheet" href="lib/bootstrap-colorpicker.css" type="text/css">
   <link rel="stylesheet" href="style/graph-diagram.css" type="text/css">
   <link rel="stylesheet" class="graph-style" href="style/graph-style-chunky.css" type="text/css">
   <link rel="stylesheet" href="style/graph-editor.css" type="text/css">
   <script type="text/javascript" src="graph-editor.js"></script>
   <script type="text/javascript" src="cypher.js"></script>
+
+  <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+  <!-- Bootstrap ColorPicker JavaScript -->
+  <script type="text/javascript" src="lib/bootstrap-colorpicker.js"></script>
+  <!-- Bootstrap 2.2.2 compiled and minified JavaScript-->
+  <script src="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js" crossorigin="anonymous"></script>
+
   <title>Arrow Tool</title>
 
-  <script type="text/javascript">
-
-    var _gaq = _gaq || [];
-    _gaq.push( ['_setAccount', 'UA-9292365-1'] );
-    _gaq.push( ['_trackPageview'] );
-
-    (function ()
-    {
-      var ga = document.createElement( 'script' );
-      ga.type = 'text/javascript';
-      ga.async = true;
-      ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-      var s = document.getElementsByTagName( 'script' )[0];
-      s.parentNode.insertBefore( ga, s );
-    })();
-
-  </script>
 </head>
 <body>
 
-<div class="tools form-inline well">
-  <button class="btn" id="add_node_button"><i class="icon-plus"></i> Node</button>
-  <button class="btn" id="exportCypherButton">Export Cypher</button>
-  <button class="btn" id="exportMarkupButton">Export Markup</button>
-  <a class="btn" id="downloadSvgButton" download="arrows.svg">Download SVG</a>
-  <button class="btn" id="chooseStyleButton">Choose Style</button>
-  <label for="internalScale">Internal Scale</label>
-  <input id="internalScale" type="range" min="0.1" max="5" value="1" step="0.01">
+<div class="navbar navbar-fixed-top">
+  <div class="navbar-inner">
+    <div class="container-fluid">
+      <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </a>
+      <ul class="nav">
+      </ul>
+      <div class="nav-collapse collapse">
+        <ul class="nav pull-right">
+          <li><a id="add_node_button"><i class="icon-plus"></i> Node</a></li>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">Export <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a id="exportMarkupButton">Markup</a></li>
+              <li><a id="downloadSvgButton" download="arrows.svg">SVG</a></li>
+              <li><a id="exportCypherButton">Cypher</a></li>
+            </ul>
+          </li>
+          <li><a id="chooseStyleButton">Style</a></li>
+          <li><a><input id="internalScale" type="range" min="0.1" max="5" value="1" step="0.01"></a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </div>
 </div>
 
-<!--<input id="node_name_editor" class="editor-field">-->
-
+<!-- Modals -->
 <div class="modal hide export-markup">
   <div class="modal-header">
     <h3>Edit/Export markup</h3>
@@ -56,6 +66,25 @@
     <a href="#" class="btn btn-primary" id="save_markup">Save</a>
   </div>
 </div>
+
+<div class="modal hide edit-diagram-title">
+  <div class="modal-header">
+    <h3>Edit Title</h3>
+  </div>
+  <div class="modal-body">
+    <div class="control-group">
+      <label class="control-label" for="diagram_title">Title</label>
+      <div class="controls">
+        <input id="diagram_title" type="text" value="Diagram 1">
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <a href="#" class="btn cancel">Cancel</a>
+    <a href="#" class="btn btn-primary" id="save_diagram_title">Save</a>
+  </div>
+</div>
+
 <div class="modal hide choose-style">
   <div class="modal-header">
     <h3>Choose Style</h3>
@@ -75,6 +104,7 @@
     <a href="#" class="btn btn-primary" id="saveStyle">Save</a>
   </div>
 </div>
+
 <div class="modal hide pop-up-editor node" tabindex="-1">
   <div class="modal-header">
     <h3>Edit Node</h3>
@@ -84,6 +114,18 @@
   </div>
   <div class="modal-body">
     <div class="form-horizontal">
+
+      <!-- Shape selector -->
+      <div class="control-group">
+        <label class="control-label" for="node_caption">Shape</label>
+        <div class="controls">
+          <select id="node-shape">
+            <option>Circle</option>
+            <option>Rectangle</option>
+          </select>
+        </div>
+      </div>
+
       <div class="control-group">
         <label class="control-label" for="node_caption">Caption</label>
         <div class="controls">
@@ -96,6 +138,33 @@
           <textarea id="node_properties" rows="6"></textarea>
         </div>
       </div>
+
+      <!-- Text colorpicker -->
+      <div class="control-group">
+        <label class="control-label" for="node_txt_color">Text Color</label>
+        <div id="cp1" class="controls input-group colorpicker-component">
+            <span class="btn input-group-addon" ><i></i></span>
+            <input id="node_txt_color" type="text" value="#000000" class="form-control" />
+        </div>
+        <script>
+            $(function() {
+                $('#cp1').colorpicker();
+            });
+        </script>
+      </div>
+      <!-- Background colorpicker -->
+      <div class="control-group">
+        <label class="control-label" for="node_bg_color">Background Color</label>
+        <div id="cp2" class="controls input-group colorpicker-component">
+            <span class="btn input-group-addon" ><i></i></span>
+            <input id="node_bg_color" value="#ffffff" type="text"  class="form-control" />
+        </div>
+        <script>
+            $(function() {
+                $('#cp2').colorpicker();
+            });
+        </script>
+      </div>
     </div>
   </div>
   <div class="modal-footer">
@@ -103,6 +172,7 @@
     <a href="#" class="btn btn-primary" id="edit_node_save">Save</a>
   </div>
 </div>
+
 <div class="modal hide pop-up-editor relationship" tabindex="-1">
   <div class="modal-header">
     <h3>Edit Relationship</h3>
@@ -132,6 +202,7 @@
     <a href="#" class="btn btn-primary" id="edit_relationship_save">Save</a>
   </div>
 </div>
+
 <div class="modal hide export-cypher">
   <div class="modal-header">
     <h3>Export as Cypher</h3>

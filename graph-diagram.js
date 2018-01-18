@@ -1,3 +1,4 @@
+
 gd = {};
 
 (function() {
@@ -57,6 +58,7 @@ gd = {};
             var caption;
             var classes = [];
             var properties = new Properties(model.stylePrototype.nodeProperties);
+            var isRectangle = false;
 
             this.class = function(classesString) {
                 if (arguments.length == 1) {
@@ -172,6 +174,15 @@ gd = {};
 
             this.properties = function() {
                 return properties;
+            };
+
+            this.isRectangle = function(choice) {
+                //swap between shapes
+                if (arguments.length == 1) {
+                    isRectangle = choice;
+                    return isRectangle;
+                }
+                return isRectangle;
             };
 
             this.style = styleSet(model.stylePrototype.node);
@@ -1394,17 +1405,20 @@ gd = {};
                 return d.model.class().join(" ") + " " + "node-id-" + d.model.id;
             }
 
-            var circles = view.selectAll("circle.node")
+            var rectangles = view.selectAll("rect.node")
                 .data(nodes);
 
-            circles.exit().remove();
+            rectangles.exit().remove();
 
-            circles.enter().append("svg:circle")
-                .attr("class", nodeClasses);
+            rectangles.enter().append("svg:rect")
+                .attr("class",nodeClasses);
 
-            circles
-                .attr("r", function(node) {
-                    return node.radius.mid();
+            rectangles
+                .attr("width", function(node) { 
+                    return node.radius.mid() * 2;
+                })
+                .attr("height", function(node) {
+                    return node.radius.mid() * 2;
                 })
                 .attr("fill", function(node) {
                     return node.model.style("background-color");
@@ -1415,8 +1429,25 @@ gd = {};
                 .attr("stroke-width", function(node) {
                     return node.model.style("border-width");
                 })
-                .attr("cx", field("x"))
-                .attr("cy", field("y"));
+                .attr("rx", function(node) {
+                    if(node.model.isRectangle())
+                        return "30";
+                    else
+                        return node.radius.mid();
+                }) 
+                .attr("ry", function(node) {
+                    if(node.model.isRectangle())
+                        return "30";
+                    else
+                        return node.radius.mid();
+                }) 
+                .attr("x", function(node) {
+                    return node.x - node.radius.inside();
+                })
+                .attr("y", function(node) {
+                    return node.y - node.radius.inside();
+                }); 
+
 
             function captionClasses(d) {
                 return "caption " + d.node.model.class();

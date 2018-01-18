@@ -6,13 +6,25 @@ svg.graphdiagram {
     height: 100%
 }
 
-.tools {
+/*.tools {
     z-index: 100;
     position: absolute;
     right: 10px;
     top: 10px;
     padding: 10px;
     background-color: #f7f7f7;
+}*/
+
+.navbar a {
+    cursor: pointer;
+}
+
+.navbar li {
+    border-right: 1px solid #e6e6e6;
+}
+
+.navbar li:last-child {
+    border: none;
 }
 
 .modal.pop-up-editor.node {
@@ -55,15 +67,19 @@ textarea.code {
     margin-left: 5px;
 }
 
-circle.node.overlay:hover {
+rect.node.overlay:hover {
     fill: rgba(150, 150, 255, 0.5);
 }
 
-circle.node.ring:hover {
+rect.node.ring:hover {
     stroke: rgba(150, 150, 255, 0.5);
 }
 
 path.relationship.overlay:hover {
     fill: rgba(150, 150, 255, 0.5);
     stroke: rgba(150, 150, 255, 0.5);
+}
+
+.colorpicker-component input {
+    width: 152px;
 }

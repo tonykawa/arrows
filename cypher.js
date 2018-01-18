@@ -35,8 +35,8 @@ function cypher(model) {
     model.relationshipList().forEach(function (rel) {
         statements.push("(" + quote(rel.start.id) +
             ")-[:`" + quote(rel.relationshipType()||"RELATED_TO") +
-            "` " + render(props(rel)) +
-            "]->("+ quote(rel.end.id) +")"
+            // " " + TODO render(props(rel)) +
+            "`]->("+ quote(rel.end.id) +")"
         );
     });
     if (statements.length==0) return "";
