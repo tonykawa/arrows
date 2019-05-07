@@ -117,15 +117,10 @@ window.onload = function()
                     return "translate(" + r.start.model.ex() + "," + r.start.model.ey() + ") rotate(" + angle + ")";
                 } )
                 .attr("d", function(d) { return d.arrow.outline; } );
-
-            console.log("diagram")
         });
 
     function draw()
     {
-        console.log("Local Storage")
-        console.log(graphModel)
-
         svg
             .data([graphModel])
             .call(diagram);
