@@ -1373,7 +1373,7 @@ gd = {};
             context.font = "normal normal normal " + fontSize + "/normal " + fontFamily;
             return context.measureText(text).width;
         };
-
+        
         return textDimensions;
     }();
 

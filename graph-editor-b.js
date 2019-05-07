@@ -28,8 +28,7 @@ window.onload = function()
 
             nodeOverlays.enter().append("rect")
                 .attr("class", "node overlay")
-                .call( d3.drag().on( "drag", drag ).on( "end", dragEnd ) )
-                // .call( d3.behavior.drag().on( "drag", drag ).on( "dragend", dragEnd ) )
+                .call( d3.behavior.drag().on( "drag", drag ).on( "dragend", dragEnd ) )
                 .on( "dblclick", editNode );
 
             nodeOverlays
@@ -67,7 +66,7 @@ window.onload = function()
 
             nodeRings.enter().append("rect")
                 .attr("class", "node ring")
-                .call( d3.drag().on( "drag", dragRing ).on( "end", dragEnd ) );
+                .call( d3.behavior.drag().on( "drag", dragRing ).on( "dragend", dragEnd ) );
 
             nodeRings
                 .attr("width", function(node) {
@@ -296,16 +295,12 @@ window.onload = function()
 
     function editRelationship()
     {
-        // var editor = d3.select(".pop-up-editor.relationship");
-        var element = "#edgeModal";
-        var editor = d3.select("#edgeModal");
-        var button = d3.select("#edgeButton")
-        button.node().click();
-        // appendModalBackdrop();
-        // editor.classed( "in", false );
-        // editor.attr( "class", "modal fade in pop-up-editor relationship" )
-        // console.log(editor)
+        var editor = d3.select(".pop-up-editor.relationship");
+        appendModalBackdrop();
+        editor.classed( "hide", false );
+
         var relationship = this.__data__.model;
+
         var relationshipTypeField = editor.select("#relationship_type");
         relationshipTypeField.node().value = relationship.relationshipType() || "";
         relationshipTypeField.node().select();
@@ -331,7 +326,7 @@ window.onload = function()
             });
             save( formatMarkup() );
             draw();
-            cancelModal(element);
+            cancelModal();
         }
 
         function reverseRelationship()
@@ -339,7 +334,7 @@ window.onload = function()
             relationship.reverse();
             save( formatMarkup() );
             draw();
-            cancelModal(element);
+            cancelModal();
         }
 
         function deleteRelationship()
@@ -347,11 +342,7 @@ window.onload = function()
             graphModel.deleteRelationship(relationship);
             save( formatMarkup() );
             draw();
-            cancelModal(element);
-        }
-
-        function cancelEditEdge() {
-            cancelModal(element);
+            cancelModal();
         }
 
         relationshipTypeField.on("keypress", onControlEnter(saveChange) );
@@ -360,9 +351,6 @@ window.onload = function()
         editor.select("#edit_relationship_save").on("click", saveChange);
         editor.select("#edit_relationship_reverse").on("click", reverseRelationship);
         editor.select("#edit_relationship_delete").on("click", deleteRelationship);
-        editor.select("#cancel_edit_relationship").on("click", cancelEditEdge);
-        
-        
     }
 
     function formatMarkup()
@@ -380,11 +368,10 @@ window.onload = function()
         return markup;
     }
 
-    function cancelModal(element)
+    function cancelModal()
     {
-        $(element).modal('hide');
-        // d3.selectAll( ".modal" ).classed( "hide", true );
-        // d3.selectAll( ".modal-backdrop" ).remove();
+        d3.selectAll( ".modal" ).classed( "hide", true );
+        d3.selectAll( ".modal-backdrop" ).remove();
     }
 
     d3.selectAll( ".btn.cancel" ).on( "click", cancelModal );
@@ -392,19 +379,19 @@ window.onload = function()
 
     function appendModalBackdrop()
     {
-        // d3.select( "body" ).append( "div" )
-        //     .attr( "class", "modal-backdrop" )
-        //     .on( "click", cancelModal );
+        d3.select( "body" ).append( "div" )
+            .attr( "class", "modal-backdrop" )
+            .on( "click", cancelModal );
     }
 
     var exportMarkup = function ()
     {
-        // appendModalBackdrop();
-        // d3.select( ".modal.export-markup" ).classed( "hide", false );
+        appendModalBackdrop();
+        d3.select( ".modal.export-markup" ).classed( "hide", false );
 
         var markup = formatMarkup();
         d3.select( "textarea.code" )
-            // .attr( "rows", markup.split( "\n" ).length * 2 )
+            .attr( "rows", markup.split( "\n" ).length * 2 )
             .node().value = markup;
     };
 
@@ -516,26 +503,19 @@ window.onload = function()
 		saveAs(blob, filename+".graph");
 	}
 
-    // d3.select("#internalScale").node().value = graphModel.internalScale();
-    console.log(graphModel.internalScale());
+    d3.select("#internalScale").node().value = graphModel.internalScale();
+
     d3.select(window).on("resize", draw);
-    // d3.select("#internalScale" ).on("change", changeInternalScale);
+    d3.select("#internalScale" ).on("change", changeInternalScale);
     d3.select( "#saveSessionButton" ).on( "click", saveSession );
     d3.select( "#exportMarkupButton" ).on( "click", exportMarkup );
     d3.select( "#importDiagram" ).on( "click", importDiagram );
-	// d3.select( "#exportCypherButton" ).on( "click", exportCypher );
-    // d3.select( "#chooseStyleButton" ).on( "click", chooseStyle );
+	d3.select( "#exportCypherButton" ).on( "click", exportCypher );
+    d3.select( "#chooseStyleButton" ).on( "click", chooseStyle );
     d3.selectAll( ".modal-dialog" ).on( "click", function ()
     {
         d3.event.stopPropagation();
     } );
 
-
-        draw() 
-        draw()
-        draw()
-        draw()
-        draw()
-
-    
+    draw();
 };
