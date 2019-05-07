@@ -39,11 +39,20 @@
 
         var Node = function() {
             var position = {};
+            var type; // waypoint & task
             var prototypePosition;
             var caption;
             var classes = [];
             var properties = new Properties(model.stylePrototype.nodeProperties);
             var isRectangle = false;
+
+            this.type = function(typeField) {
+                if (arguments.length == 1) {
+                    type = typeField;
+                    return this;
+                }
+                return type;
+            }
 
             this.class = function(classesString) {
                 if (arguments.length == 1) {

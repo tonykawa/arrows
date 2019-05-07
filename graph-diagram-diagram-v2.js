@@ -331,4 +331,9 @@
 
         return diagram;
     };
+
+    function parsePixels(fontSize)
+    {
+        return parseFloat( fontSize.slice( 0, -2 ) );
+    }
 })();

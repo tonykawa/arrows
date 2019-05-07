@@ -1,7 +1,6 @@
 gd = {};
 
 (function() {
-
     gd.parameters = {
         radius: 50,
         nodeStrokeWidth: 8,

@@ -239,6 +239,8 @@ window.onload = function()
         captionField.node().value = node.caption() || "";
         captionField.node().select();
 
+        var typeField = editor.select("#node_type");
+        typeField.node().value = node.type() || "waypoint";
 
         var propertiesField = editor.select("#node_properties");
         propertiesField.node().value = node.properties().list().reduce(function(previous, property) {
@@ -258,14 +260,15 @@ window.onload = function()
             node.style("color", textColor.value);
 
             //updating node's shape
-            selectedShape = editor.select("#node-shape").node().value;
-            if(selectedShape == "Circle") {
-                node.isRectangle(false);
-            }
-            else {
-                node.isRectangle(true);
-            }
-
+            // selectedShape = editor.select("#node-shape").node().value;
+            // if(selectedShape == "Circle") {
+            //     node.isRectangle(false);
+            // }
+            // else {
+            //     node.isRectangle(true);
+            // }
+            console.log("Type: " + typeField.node().value);
+            node.type( typeField.node().value );
             node.caption( captionField.node().value );
             node.properties().clearAll();
             propertiesField.node().value.split("\n").forEach(function(line) {
@@ -381,6 +384,8 @@ window.onload = function()
     	//To-Do: Add colors and shape settings, also add rectangle shape to bootstrap styles
         var container = d3.select( "body" ).append( "div" );
         gd.markup.format( graphModel, container );
+        console.log(container)
+
         var markup = container.node().innerHTML;
         markup = markup
             .replace( /<li/g, "\n  <li" )

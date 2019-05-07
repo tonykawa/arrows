@@ -93,8 +93,12 @@
                 nodeMarkup.select("span.caption").each(function() {
                     node.caption(d3.select(this).text());
                 });
+                nodeMarkup.select("span.type").each(function() {
+                    node.type(d3.select(this).text());
+                });
+                console.log(node);
+                
                 nodeMarkup.select( "dl.properties" ).each( parseProperties( node ) );
-
                 copyStyles(node, nodeMarkup);
             });
 
@@ -149,6 +153,15 @@
                     li.append("span")
                         .attr("class", "caption")
                         .text(node.caption());
+                }
+                console.log("markup")
+                console.log(node)
+                console.log(node.type())
+
+                if (node.type()) {
+                    li.append("span")
+                        .attr("class", "type")
+                        .text(node.type());
                 }
                 formatProperties( node, li );
             });

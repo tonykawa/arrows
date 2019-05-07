@@ -6,9 +6,9 @@
   <script type="text/javascript" src="lib/filesaver.js"></script>
   <script type="text/javascript" src="graph-diagram-init-v2.js"></script>  
   <script type="text/javascript" src="graph-diagram-model-v2.js"></script>
-  <script type="text/javascript" src="graph-diagram-diagram-v2.js"></script>
   <script type="text/javascript" src="graph-diagram-markup-v2.js"></script>
   <script type="text/javascript" src="graph-diagram-v2.js"></script>
+  <script type="text/javascript" src="graph-diagram-diagram-v2.js"></script>
   <!-- <link rel="stylesheet" href="lib/bootstrap.css" type="text/css"> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
 
@@ -115,19 +115,24 @@
                         </div>
                         <div class="modal-body">
                                 <!-- Shape selector -->
-                                <div class="control-group">
-                                    <label class="control-label" for="node_caption">Shape</label>
+                                <!-- <div class="control-group">
+                                    <label class="control-label" for="node_shape">Shape</label>
                                     <select id="node-shape" class="form-control">
                                         <option>Circle</option>
                                         <option>Rectangle</option>
                                     </select>
-                                </div>
+                                </div> -->
                         
                                 <div class="control-group">
                                     <label class="control-label" for="node_caption">Caption</label>
-                              
                                     <input id="node_caption" class="form-control" type="text" value="A">
-
+                                </div>
+                                <div class="control-group">
+                                    <label class="control-label" for="node_type">Type</label>
+                                    <select id="node_type" class="form-control">
+                                        <option value="waypoint" selected> Waypoint </option>
+                                        <option value="task"> Task </option>
+                                    </select>
                                 </div>
                                 <div class="control-group">
                                 <label class="control-label" for="node_properties">Properties</label>
