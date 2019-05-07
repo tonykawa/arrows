@@ -4,7 +4,7 @@
   <script type="text/javascript" src="lib/d3.v5.js" charset="UTF-8"></script>
   <!-- <script src="https://d3js.org/d3.v5.js" charset="UTF-8"></script> -->
   <script type="text/javascript" src="lib/filesaver.js"></script>
-  <script type="text/javascript" src="graph-diagram.js"></script>
+
 
   <!-- <link rel="stylesheet" href="lib/bootstrap.css" type="text/css"> -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
@@ -14,6 +14,7 @@
   <link rel="stylesheet" class="graph-style" href="style/graph-style-chunky.css" type="text/css">
   <link rel="stylesheet" href="style/graph-editor.css" type="text/css">
   <link rel="stylesheet" href="index.css"/>
+  
 
   <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
   <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
@@ -24,8 +25,6 @@
   <!-- Bootstrap 2.2.2 compiled and minified JavaScript-->
   <!-- <script src="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js" crossorigin="anonymous"></script> -->
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" crossorigin="anonymous"></script>
-  <script type="text/javascript" src="graph-editor.js"></script>
-  <script type="text/javascript" src="cypher.js"></script>
   <title>Arrow Tool</title>
 
 </head>
@@ -43,7 +42,7 @@
             </div>
             <div class="collapse navbar-collapse navbar-right" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
-                <li><a id="add_node_button"><i class="icon-plus"></i> Node</a></li>
+                <li><a id="add_node_button"><i class="glyphicon glyphicon-plus"></i> Node</a></li>
                 
                 <!-- <a id="triggerRelationshipButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#edgeModal">Edge</a> -->
 
@@ -57,7 +56,7 @@
                         <li><a id="exportCypherButton" data-toggle="modal" data-target="#exportModal">Cypher</a></li>
                     </ul>
                 </li>
-                <li><a><input type="range" id="formControlRange" min="0.1" max="5" value="1" step="0.01"></a></li>
+                <li><a><input type="range" id="internalScale" min="0.1" max="5" value="1" step="0.01"></a></li>
                 
                 <!-- <li><a id="chooseStyleButton" data-toggle="modal" data-target="#basicModal">Style</a></li> -->
                 <!-- <input id="internalScale" type="range" min="0.1" max="5" value="1" step="0.01" /> -->
@@ -69,6 +68,7 @@
     <div class="container">
 
         <a id="edgeButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#edgeModal" style="display: none">Edge</a>
+        <a id="nodeButton" href="#" class="btn btn-lg btn-success" data-toggle="modal" data-target="#nodeModal" style="display: none">Edge</a>
 
         <!-- Edge Modal -->
         <div id="edgeModal" class="modal fade" tabindex="-1">
@@ -92,13 +92,86 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <a href="#" class="btn cancel" id="cancel_edit_relationship">Cancel</a>
+                        <a href="#" class="btn btn-default" id="cancel_edit_relationship">Cancel</a>
                         <a href="#" class="btn btn-primary" id="edit_relationship_save">Save</a>
                     </div>
                 </div>
             </div>
         </div>
+
+        <!-- Node Modal --> 
+        <div id="nodeModal" class="modal fade" tabindex="-1">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3>Edit Node</h3>
+                        </div>
+                        <div class="top-right-btn-bar">
+                            <button class="btn btn-danger" id="edit_node_delete">Delete</button>
+                        </div>
+                        <div class="modal-body">
+                                <!-- Shape selector -->
+                                <div class="control-group">
+                                    <label class="control-label" for="node_caption">Shape</label>
+                                    <select id="node-shape" class="form-control">
+                                        <option>Circle</option>
+                                        <option>Rectangle</option>
+                                    </select>
+                                </div>
+                        
+                                <div class="control-group">
+                                    <label class="control-label" for="node_caption">Caption</label>
+                              
+                                    <input id="node_caption" class="form-control" type="text" value="A">
+
+                                </div>
+                                <div class="control-group">
+                                <label class="control-label" for="node_properties">Properties</label>
+                                
+                                    <textarea id="node_properties" class="form-control" rows="6"></textarea>
+                                
+                                </div>
+                        
+                                <!-- Text colorpicker -->
+                                <div class="control-group">
+                                    <label class="control-label" for="node_txt_color">Text Color</label>
+                                <div id="cp1" class="controls input-group colorpicker-component">
+                                    <span class="btn input-group-addon" ><i></i></span>
+                                    <input id="node_txt_color" type="text" value="#000000" class="form-control" />
+                                </div>
+                                    <script>
+                                        $(function() {
+                                            $('#cp1').colorpicker();
+                                        });
+                                    </script>
+                                </div>
+                                <!-- Background colorpicker -->
+                                <div class="control-group">
+                                    <label class="control-label" for="node_bg_color">Background Color</label>
+                                <div id="cp2" class="controls input-group colorpicker-component">
+                                    <span class="btn input-group-addon" ><i></i></span>
+                                    <input id="node_bg_color" value="#ffffff" type="text"  class="form-control" />
+                                </div>
+                                <script>
+                                    $(function() {
+                                        $('#cp2').colorpicker();
+                                    });
+                                </script>
+                                </div>
+                            </div>
+                        <div class="modal-footer">
+                            <a href="#" class="btn btn-default" id="cancel_edit_node">Cancel</a>
+                            <a href="#" class="btn btn-primary" id="edit_node_save">Save</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
     </div>
     <div id="canvas"></div>
 </body>
 </html>
+
+<script type="text/javascript" src="graph-editor.js"></script>
+<script type="text/javascript" src="graph-diagram.js"></script>
+<script type="text/javascript" src="cypher.js"></script>

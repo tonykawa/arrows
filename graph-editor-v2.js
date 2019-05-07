@@ -28,8 +28,8 @@ window.onload = function()
 
             nodeOverlays.enter().append("rect")
                 .attr("class", "node overlay")
-                .call( d3.drag().on( "drag", drag ).on( "end", dragEnd ) )
-                // .call( d3.behavior.drag().on( "drag", drag ).on( "dragend", dragEnd ) )
+                // .call( d3.drag().on( "drag", drag ).on( "end", dragEnd ) )
+                .call( d3.behavior.drag().on( "drag", drag ).on( "dragend", dragEnd ) )
                 .on( "dblclick", editNode );
 
             nodeOverlays
@@ -67,7 +67,8 @@ window.onload = function()
 
             nodeRings.enter().append("rect")
                 .attr("class", "node ring")
-                .call( d3.drag().on( "drag", dragRing ).on( "end", dragEnd ) );
+                // .call( d3.drag().on( "drag", dragRing ).on( "end", dragEnd ) );
+                .call( d3.behavior.drag().on( "drag", dragRing ).on( "dragend", dragEnd ) )
 
             nodeRings
                 .attr("width", function(node) {
